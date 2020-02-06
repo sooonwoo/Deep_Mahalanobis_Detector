@@ -43,6 +43,10 @@ def ood_test_mahalanobis(model, id_train_loader, id_test_loader, ood_test_loader
     pass 
 
 
+def id_classification_test(model, id_train_loader, args):
+    pass
+
+
 if __name__ == "__main__":
     import torchvision
     import torchvision.transforms as transforms
@@ -53,8 +57,9 @@ if __name__ == "__main__":
         
         # experimental settings
         parser.add_argument('--seed', type=int, default=0, help='Random seed.')   
+        parser.add_argument('--task', type=str, default='ood_detection', help='calssification | ood_detection')
         parser.add_argument('--alg', type=str, default='mahalanobis', help='baseline | mahalanobis')
-        # parser.add_argument('--alg', type=str, default='mahalanobis', help='baseline | mahalanobis')
+        
 
         parser.add_argument('--train_bs', type=int, default=10000, help='Batch size of in_trainloader.')   
         parser.add_argument('--test_bs', type=int, default=1000, help='Batch size of in_testloader and out_testloader.')   
@@ -107,11 +112,18 @@ if __name__ == "__main__":
     model.load_state_dict(torch.load('./model/resnet34-31.pth'))
 
     # ood dectection test
-    if args.alg == 'baseline':
-        print('result of baseline alg')
-        ood_test_baseline(model, id_trainloader, id_testloader, ood_testloader, args)
-    elif args.alg == 'mahalanobis':
-        print('result of mahalanobis alg')
-        ood_test_mahalanobis(model, id_trainloader, id_testloader, ood_testloader, args)
+    if args.task == 'ood_detection':
+        if args.alg == 'baseline':
+            print('result of baseline alg')
+            ood_test_baseline(model, id_trainloader, id_testloader, ood_testloader, args)
+        elif args.alg == 'mahalanobis':
+            print('result of mahalanobis alg')
+            ood_test_mahalanobis(model, id_trainloader, id_testloader, ood_testloader, args)
+        else:
+            print('--alg should be baseline or mahalanobis')
+    
+    # classification test
+    elif args.task == 'classification':
+        id_classification_test(model, id_trainloader, args)
     else:
-        print('--alg should be baseline or mahalanobis')
+        print('--task should be ood_detection or classification')
