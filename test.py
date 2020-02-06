@@ -46,7 +46,10 @@ def ood_test_mahalanobis(model, id_train_loader, id_test_loader, ood_test_loader
     pass 
 
 
-def id_classification_test(model, id_train_loader, args):
+def id_classification_test(model, id_train_loader, id_test_loader, args):
+    """
+    TODO : Calculate test accuracy of CIFAR-10 test set by using Mahalanobis classification method 
+    """
     pass
 
 
@@ -60,7 +63,7 @@ if __name__ == "__main__":
         
         # experimental settings
         parser.add_argument('--seed', type=int, default=0, help='Random seed.')   
-        parser.add_argument('--task', type=str, default='ood_detection', help='calssification | ood_detection')
+        parser.add_argument('--task', type=str, default='ood_detection', help='classification | ood_detection')
         parser.add_argument('--alg', type=str, default='mahalanobis', help='baseline | mahalanobis')
         
 
@@ -127,6 +130,6 @@ if __name__ == "__main__":
     
     # classification test
     elif args.task == 'classification':
-        id_classification_test(model, id_trainloader, args)
+        id_classification_test(model, id_trainloader, id_testloader, args)
     else:
         print('--task should be ood_detection or classification')
