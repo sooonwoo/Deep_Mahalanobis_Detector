@@ -6,6 +6,9 @@ from utils import *
 
 
 def ood_test_baseline(model, id_train_loader, id_test_loader, ood_test_loader, args):
+    """
+    Implementation of baseline ood detection method
+    """
     threshold = 0.67
     
     model = model.cuda()
